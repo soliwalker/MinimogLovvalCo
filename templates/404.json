@@ -1,1 +1,52 @@
-{"sections":{"main":{"type":"404-template","settings":{"bg_color":"#ffffff","t1_color":"#000","t2_color":"#000"}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "404-template",
+      "settings": {
+        "bg_color": "#ffffff",
+        "t1_color": "#000000",
+        "t2_color": "#000000"
+      }
+    },
+    "e6700458-adbb-4fc6-b783-9eafe9d2dbab": {
+      "type": "recent-viewed-products",
+      "settings": {
+        "container": "container",
+        "heading": "Recently Viewed Products",
+        "limit": 8,
+        "columns": 4,
+        "column_gap": 30,
+        "enable_slider": true
+      }
+    },
+    "1670325059263a65ae": {
+      "type": "apps",
+      "blocks": {
+        "f5b3c615-d9af-441f-a71e-c7897e9abcb6": {
+          "type": "shopify:\/\/apps\/klaviyo-email-marketing-sms\/blocks\/form-embed-block\/2632fe16-c075-4321-a88b-50b567f42507",
+          "settings": {
+            "formId": "THqGYm"
+          }
+        }
+      },
+      "block_order": [
+        "f5b3c615-d9af-441f-a71e-c7897e9abcb6"
+      ],
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "header_alignment": "center",
+        "container": "container",
+        "background_color": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "e6700458-adbb-4fc6-b783-9eafe9d2dbab",
+    "1670325059263a65ae"
+  ]
+}

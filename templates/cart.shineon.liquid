@@ -1,0 +1,27 @@
+<!-- BEGIN SHINEON CART TEMPLATE UPGRADE v{% render 'shineon-version' %} -->
+
+{% comment %}
+  Page preloader
+{% endcomment %}
+{{ "/services/javascripts/currencies.js" | script_tag }}
+<script type="text/javascript">
+  document.body.classList.add('loading');
+</script>
+
+{% include 'product-shineon-custom-styles' %}
+{% include 'product-shineon-scripts' with 'analytics-scripts' %}
+<script src="{{ 'theme-shineon.js' | asset_url }}" defer></script>
+{{ 'so-theme.css' | asset_url | stylesheet_tag }}
+{{ 'tailwind-shineon.css' | asset_url | stylesheet_tag }}
+
+<script>
+{% for item in cart.items %}
+  document.addEventListener("DOMContentLoaded", function () {
+    shineon.analytics.fb.send_event.init_pixel({{ item.product.metafields.shineon.fb_pixel_id }});
+  });
+{% endfor %}
+</script>
+
+{%- section 'cart-shineon' -%}
+
+<!-- END SHINEON CART TEMPLATE UPGRADE v{% render 'shineon-version' %} -->

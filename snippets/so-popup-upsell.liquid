@@ -1,0 +1,94 @@
+
+{% case so-popup-upsell %}
+
+  {% when 'engraving' %}
+    {% assign so_modal_upsell_text_heading = 'purchase_form_modal_callout_engraving_primary' | t %}
+
+  {% when 'box-choice' %}
+    {% assign so_modal_upsell_text_heading = 'purchase_form_modal_callout_primary_html' | t %}
+
+  {% when 'material' %}
+    {% assign so_modal_upsell_text_heading = 'purchase_form_modal_callout_gold_html' | t %}
+
+{% endcase %}
+
+<style type="text/css">
+  .product-popup-modal__content {
+    max-width: 1200px;
+    margin-bottom: 5rem;
+  }
+  .product-popup-modal__content,
+  .product-popup-modal__content-info {
+    padding: 0;
+  }
+  .product-popup-modal .product-form__buttons {
+    margin-top: 3rem;
+  }
+  @media(min-width: 768px) {
+    .product-popup-modal .product-form__buttons {
+      margin-top: 6rem;
+    }
+  }
+  .so-upsell-popup-heading {
+    font-family: EB Garamond;
+    line-height: 1.15 !important;
+  }
+</style>
+
+<so-modal-dialog id="PopupModal-so-upsell" class="product-popup-modal" {{ block.shopify_attributes }}>
+  <div role="dialog" aria-label="{{ block.settings.text }}" aria-modal="true" class="product-popup-modal__content" tabindex="-1">
+    <button id="ModalClose-so-upsell" type="button" class="product-popup-modal__toggle" aria-label="{{ 'accessibility.close' | t }}">{% render 'so-icons', icon: 'close' %}</button>
+    <div class="shineon-theme shineon-theme--primary product-popup-modal__content-info">
+      <div class="so-antialiased so-font-sans so-flex so-flex-col lg:so-flex-row">
+        <div class="so-basis-4/6 so-shadow-[-20px_0_40px_rgba(0,0,0,0.26)] so-relative">
+          <div class="featured-image">
+            {% assign selected_option1 = product.selected_or_first_available_variant.option1 %}
+            {% assign selected_variant = product.selected_or_first_available_variant %}
+            {% for variant in product.variants %}
+              {% if variant.option1 == selected_option1 and variant.metafields.shineon.atc_upsell != 'none' %}
+                {% assign selected_variant = variant %}
+              {% endif %}
+            {% endfor %}
+            {% assign featured_image = selected_variant.featured_image | img_url: 'master' %}
+            <img srcset="{%- if selected_variant.featured_image.width >= 550 -%}{{ featured_image | image_url: width: 550 }} 550w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 1100 -%}{{ featured_image | image_url: width: 1100 }} 1100w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 1445 -%}{{ featured_image | image_url: width: 1445 }} 1445w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 1680 -%}{{ featured_image | image_url: width: 1680 }} 1680w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 2048 -%}{{ featured_image | image_url: width: 2048 }} 2048w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 2200 -%}{{ featured_image | image_url: width: 2200 }} 2200w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 2890 -%}{{ featured_image | image_url: width: 2890 }} 2890w,{%- endif -%}
+            {%- if selected_variant.featured_image.width >= 4096 -%}{{ featured_image | image_url: width: 4096 }} 4096w,{%- endif -%}
+            {{ selected_variant.featured_image | image_url }} {{ selected_variant.featured_image.width }}w"
+            sizes="(min-width: 750px) calc(100vw - 22rem), 1100px"
+            src="{{ selected_variant.featured_image | image_url: width: 1445 }}"
+            alt="{{ selected_variant.featured_image.alt | escape }}"
+            loading="lazy"
+            width="1100"
+            height="{{ 1100 | divided_by: selected_variant.featured_image.aspect_ratio | ceil }}"
+            data-media-id="{{ selected_variant.featured_image.id }}">
+          </div>
+        </div>
+        <div class="so-basis-2/6 so-bg-[#f9fafb]">
+          <div class="so-flex so-flex-row so-flex-col so-justify-center so-full-height so-px-8 so-py-16">
+            <h2 class="so-upsell-popup-heading so-normal-case so-text-3xl lg:so-text-4xl so-text-center">
+              {{ so_modal_upsell_text_heading }}
+            </h2>
+            <div class="so-mt-3">
+              {% assign btn_text_custom = 'purchase_form_modal_proceed_with_upsell' | t %}
+              {%- assign product_form_id = 'product-form-' | append: section.id -%}
+              {%- render 'so-ui' with 'form-atc', product_form_id: product_form_id, product_cf_obj: product_cf_obj, btn_text_custom: btn_text_custom, shop_pt_id_obj: shop_pt_id_obj, option2: option2, atc_upsell_type: atc_upsell_type -%}
+              <div class="so-text-center so-mt-3">
+                <so-submit-default-form data-section="{{ section.id }}"{% if option2 %} data-option2="{{ option2 }}"{% endif %} data-url="{{ product.url }}">
+                  <a href="#" id="ModalClose-no_thanks" class="product-popup-modal__close" aria-label="{{ 'accessibility.close' | t }}">{{ 'purchase_form_modal_continue_without_upsell' | t }}</a>
+                  <script type="application/json">
+                    {{ product.variants | json }}
+                  </script>
+                </so-submit-default-form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</so-modal-dialog>

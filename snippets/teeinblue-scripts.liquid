@@ -1,0 +1,83 @@
+
+<!-- teeinblue scripts. DON'T MODIFY!!! -->
+<script>
+window.teeinblueShop = {
+  shopCurrency: {{ shop.currency | json }},
+};
+</script>
+{% if template contains 'product' %}
+{% assign version = product.metafields.teeinblue.campaign_version %}
+{% assign teeProduct = false %}
+{% assign startDate = "2020-03-31 23:59:59" | date: "%s" %}
+{% assign endDate = "2020-10-20 00:00:00" | date: "%s" %}
+{% assign productCreatedDate = product.created_at | date: "%s" %}
+{% assign productVendor = product.vendor | downcase %}
+{% if version or productVendor == "teeinblue" and productCreatedDate > startDate and productCreatedDate < endDate %}
+  {% assign teeProduct = true %}
+{% endif %}
+{% if version %}
+<link rel="preload" href="https://api.teeinblue.com/api/merchant/campaigns/{{ product.id }}.json?shop={{ shop.permanent_domain }}&v={{ version }}" as="fetch" crossorigin="anonymous">
+{% endif %}
+<script id="teeinblue-product-data">
+window.TeeInBlueCampaign = {
+  {% if version %}
+    version: {{ version }},
+  {% endif %}
+  isTeeInBlueProduct: {{ teeProduct }},
+  productId: {{ product.id }},
+};
+</script>
+{% if teeProduct %}
+<script type="text/javascript" src="https://sdk.teeinblue.com/shopify/app-v1.js?token=r6px2tjSRqiY6qhBAr5JcassW4kQspfI&shop=lovevale.myshopify.com" defer="defer"></script>
+<style>
+  .teeinblue-product-loading form[action*="/cart/add"],
+  .teeinblue-product-loading .product-form,
+  .teeinblue-product-loading .product-form__input,
+  .teeinblue-product-loading variant-radios {
+    display: none;
+  }
+</style>
+<script>
+  function teeinblueDocumentReady(fn) {
+    if (document.readyState != 'loading') {
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+
+  function teeinblueAddLoader() {
+    var rootEl = document.documentElement;
+
+    if (rootEl) {
+      rootEl.classList.add('teeinblue-product-loading');
+    }
+  }
+
+  function teeinblueHideLoader() {
+    var rootEl = document.documentElement;
+
+    if (rootEl) {
+      rootEl.classList.remove('teeinblue-product-loading');
+    }
+  }
+
+  teeinblueDocumentReady(function() {
+    var timeout = window.TeeInBlue && window.TeeInBlue.loaderTimeout
+      ? window.TeeInBlue.loaderTimeout
+      : 2000;
+
+    document.addEventListener('teeinblue-event-component-injected', function() {
+      teeinblueHideLoader();
+    });
+
+    setTimeout(function() {
+      teeinblueHideLoader();
+    }, timeout);
+  });
+
+  teeinblueAddLoader();
+</script>
+{% endif %}
+{% endif %}
+<!-- teeinblue scripts end. -->

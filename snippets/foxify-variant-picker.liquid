@@ -1,0 +1,78 @@
+{% liquid
+    if variant_picker_type == nil
+        assign theme_settings = shop.metafields.foxify.theme_settings.value
+        if theme_settings != blank
+            assign variant_picker_type = theme_settings['variantPicker'].pickerType
+        endif
+    endif
+%}
+{%- unless product.has_only_default_variant -%}
+{% if variant_picker_type == 'dropdown' %}
+    <f-variant-selects class="f:variant-picker no-js-hidden" data-update-url="{{ updateUrl | default: false }}" data-product-id="{{ product.id }}" data-section-id="{{ sectionId }}" data-product-handle="{{ product.handle }}" data-url="{{ product.url }}" data-max-options="{{ product.options_with_values.size }}">
+        {%- for option in product.options_with_values -%}
+            <div class="f:variant-picker__field-wrapper">
+                <div class="f:variant-picker__input f:variant-picker__dropdown">
+                    <label class="f:form-label" for="Option-{{ sectionId }}-{{ forloop.index0 }}">
+                        <span>{{ option.name }}:</span>
+                        {% if show_selected_value %}
+                            <span class="selected-value f:hidden">{{ option.selected_value }}</span>
+                        {% endif %}
+                    </label>
+                    <select id="Option-{{ sectionId }}-{{ forloop.index0 }}"
+                            class="f:form-control"
+                            name="options[{{ option.name | escape }}]"
+                            form="{{ product_form_id }}"
+                    >
+                        {%- for value in option.values -%}
+                            <option value="{{ value | escape }}" class="f:variant-picker__option" data-value="{{- value | escape -}}" data-option-position="{{ option.position }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                {{- value -}}
+                            </option>
+                        {%- endfor -%}
+                    </select>
+                </div>
+            </div>
+        {%- endfor -%}
+        <script type="application/json">
+          {{ product.variants | json }}
+        </script>
+    </f-variant-selects>
+{% else %}
+    <f-variant-buttons class="f:variant-picker__field no-js-hidden" data-update-url="{{ updateUrl | default: false }}" data-product-id="{{ product.id }}" data-section-id="{{ sectionId }}" data-product-handle="{{ product.handle }}" data-url="{{ product.url }}" data-max-options="{{ product.options_with_values.size }}">
+        {%- for option in product.options_with_values -%}
+        <div class="f:variant-picker__field-wrapper">
+            <div class="f:variant-picker__input f:variant-picker__button">
+                <label class="f:form-label">
+                    <span>{{ option.name }}:</span>
+                    {% if show_selected_value %}
+                        <span class="selected-value f:hidden">{{ option.selected_value }}</span>
+                    {% endif %}
+                </label>
+                <div class="f:variant-picker__option-values">
+                    {%- for value in option.values -%}
+                        <div
+                            class="f:variant-picker__option"
+                            data-option-position="{{ option.position }}"
+                            data-option-type="{{ variant_picker_type }}"
+                            data-value="{{- value | escape -}}"
+                        >
+                            <input type="radio" id="{{ sectionId }}-{{ option.position }}-{{ forloop.index0 }}"
+                                   name="{{ option.name }}"
+                                   value="{{ value | escape }}"
+                                   form="{{ product_form_id }}"
+                                   {% if option.selected_value == value %}checked{% endif %}
+                            >
+                            <label for="{{ sectionId }}-{{ option.position }}-{{ forloop.index0 }}" class="f:variant-picker__option-button f:variant-picker__option-button--{{ variant_picker_type }}">
+                                {{- value -}}
+                            </label>
+                        </div>
+                    {%- endfor -%}
+                </div>
+            </div>
+        </div>
+        {%- endfor -%}
+        <script type="application/json">
+          {{ product.variants | json }}
+        </script>
+    </f-variant-buttons>
+{% endif %}
+{%- endunless -%}

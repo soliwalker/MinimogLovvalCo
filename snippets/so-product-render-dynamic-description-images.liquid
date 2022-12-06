@@ -1,0 +1,34 @@
+{% comment %}
+    Used to swap out dynamic images in long-form descriptions
+
+    Accepts:
+    - product: {Object} Shopify Product object
+
+    Usage:
+    {% render 'so-product-render-dynamic-description-images',
+      product: product
+    %}
+{% endcomment %}
+{% liquid
+    assign product_media = product.images
+%}
+<script>
+    ;(function () {
+      const product_images = {{ product_media | json }}
+      const targets = document.querySelectorAll('[data-so-dynamic-description-image]')
+
+      for (const target of targets) {
+        let index = target.dataset.soDynamicDescriptionImage
+
+        if (index === '') {
+          index = product_images.length
+        }
+
+        if (!index || !product_images[index - 1]) {
+          continue
+        }
+
+        target.src = product_images[index - 1]
+      }
+    })();
+</script>

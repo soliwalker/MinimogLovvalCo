@@ -1,0 +1,175 @@
+{% comment %}
+	Renders various ShineOn-related UI elements
+
+	Accepts:
+	- product: {Object} Product Liquid object (required)
+	- show_dynamic_checkout: {Boolean} Renders the 'Buy it Now' checkout button (optional)
+{% endcomment %}
+
+{% case so-ui %}
+
+	{% when 'button-atc' %}
+		{% assign so-ui-elem = 'button-atc' %}
+		{% assign button_type = 'submit' %}
+
+	{% when 'button-atc-popup' %}
+		{% assign so-ui-elem = 'button-atc' %}
+		{% assign button_type = 'button' %}
+
+	{% when 'engraving-input' %}
+		{% assign so-ui-elem = 'engraving-input' %}
+
+	{% when 'form-atc' %}
+		{% assign so-ui-elem = 'form-atc' %}
+
+{% endcase %}
+
+{% case so-ui-elem %}
+
+	{% when 'button-atc' %}
+		{%- if product.selected_or_first_available_variant.available -%}
+			{% if btn_text_custom %}
+				{% assign btn_text = btn_text_custom %}
+			{% else %}
+				{% assign btn_text = 'products.product.add_to_cart' | t %}
+			{% endif %}
+		{%- else -%}
+			{% assign btn_text = 'products.product.sold_out' | t %}
+		{%- endif -%}
+		<button
+			id="ProductPopup-{{ button_type }}"
+			class="so-py-3 so-rounded-full so-w-full so-text-white so-border-none product-popup-modal__button{% if block.settings.show_dynamic_checkout and product.selling_plan_groups == empty %}so-bg-transparent{% else %} so-bg-secondary{% endif %} disabled:so-cursor-not-allowed disabled:so-opacity-50"
+			type="{{ button_type }}"
+			aria-haspopup="dialog"
+			{% if atc_upsell_type != 'none' and atc_upsell_type %}
+			data-upsell-type="{{ atc_upsell_type }}"
+			{% endif %}
+			{% if atc_upsell_type != 'none' and atc_upsell_type and shop_pt_id_obj.has_atc_upsell %}
+			data-upsell-type-popup="{{ atc_upsell_type }}"
+			{% endif %}
+			style="background: var(--shineon-color-buy-button-background); color: var(--shineon-color-buy-button-text);"
+		>
+			<span class="so-uppercase so-font-semibold">
+				{{ btn_text }}
+			</span>
+			<div class="loading-overlay__spinner hidden">
+				<svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+					<circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+				</svg>
+			</div>
+		</button>
+
+	{% when 'engraving-input' %}
+		<engraving-input class="so-engraving-input-w no-js-hidden"{% if atc_upsell_type != 'none' and atc_upsell_type %}{% if option2 %}
+						data-option2="{{ option2 }}"{% endif %}
+						data-upsell-type="{{ atc_upsell_type }}"{% endif %}
+						{% if font_preview_feature %}
+						data-font-preview="1"
+						{% endif %}
+						data-section="{{ section.id }}"
+						data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+			{% assign input_label = shop_cf.label %}
+			{% assign input_placeholder = shop_cf.placeholder %}
+			{% for locale in shop_cf.locales %}
+			{% if shop.locale contains locale[0] %}
+				{% assign input_label = locale[1].label %}
+				{% assign input_placeholder = locale[1].placeholder %}
+			{% endif %}
+			{% endfor %}
+			<label>
+				{{ input_label }}
+			</label>
+			{% if font_preview_feature %}
+			<div class="font-preview-inc">
+			{% endif %}
+				<div class="field">
+					<input type="text"
+						name="properties[{{ shop_cf.name }}]"
+						class="field__input {{ shop_cf.class }}"
+						id="{{ shop_cf.id }}"
+						placeholder="{{ input_placeholder }}"
+						maxlength="{{ shop_cf.maxlength }}"
+						autocomplete="off"
+						{% assign pattern_message = 'engraving_required_tooltip' | t %}
+						{% if shop_cf.pattern_message %}
+							{% assign pattern_message = shop_cf.pattern_message %}
+						{% endif %}
+						{% if pattern_message %}
+						data-pattern-message="{{ pattern_message }}"
+						{% endif %}
+						{% if shop_cf.pattern %}
+						data-pattern="{{ shop_cf.pattern }}"
+						{% endif %}
+						{% if shop_cf.required == 1 %}required{% endif %}>
+						<span class="notification"></span>
+					<label class="field__label">
+						{{ input_placeholder }}
+						{% if font_preview_feature %}
+						<span class="so-input-counter-w">
+							<span class="so-input-counter">0</span> / <span class="so-input-counter-maxlength">{{ shop_cf.maxlength }}</span>
+						</span>
+						{% endif %}
+					</label>
+				</div>
+				{% if font_preview_feature %}
+				<div class="font-preview-w" data-metal="{{ product.selected_or_first_available_variant.metafields.shineon.metal }}">
+					<span class="preview"></span>
+				</div>
+			</div>
+			{% endif %}
+			<script type="application/json">
+				{{ product.variants | json }}
+			</script>
+		</engraving-input>
+
+	{% when 'form-atc' %}
+    <div id="MainProduct-{{ section.id }}-ProductFormAnchor" {{ block.shopify_attributes }}>
+	    <so-product-form class="product-form" data-section="{{ section.id }}">
+	      <div class="product-form__error-message-wrapper" role="alert" hidden>
+	        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-error" viewBox="0 0 13 13">
+	          <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+	          <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+	          <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+	          <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+	        </svg>
+	        <span class="product-form__error-message"></span>
+	      </div>
+	      {%- form 'product', product, id: product_form_id, class: 'form so-product-form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+			<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+			{% if shop_pt_id_obj.has_atc_upsell == true %}
+				<div class="so-text-center so-my-6">
+					<div class="so-modal-upsell-pricing-w">
+						<div class="so-modal-upsell-pricing">
+							<span class="compare_upsell_price"></span>
+							<span class="upsell_price"></span>
+						</div><!-- END so-modal-upsell-pricing -->
+						<p class="price-off unstyled saving_percents">(50% off)</p>
+					</div>
+				</div>
+			{% endif %}
+			{% assign hide_engraving = '' %}
+			{% if atc_upsell_type == 'engraving' and shop_pt_id_obj.has_atc_upsell != true and shop_pt_id_obj.has_atc_upsell %}
+				{% assign hide_engraving = ' so-hidden' %}
+			{% endif %}
+	        {% for cf in product_cf_obj %}
+				{% assign shop_cf = shop.metafields.shineon[cf.key].value %}
+				{% if shop_cf.field_type == 'engraving' %}
+					<div class="so-my-3{{ hide_engraving }}{% unless atc_upsell_type == 'engraving' and shop_pt_id_obj.has_atc_upsell %} so-hidden{% endunless %}">
+						{%- render 'so-ui' with 'engraving-input', shop_cf: shop_cf, shop_pt_id_obj: shop_pt_id_obj, option2: option2, atc_upsell_type: atc_upsell_type -%}
+					</div>
+				{% endif %}
+	        {% endfor %}
+	        <div class="shopify-section shineon-theme shineon-theme--primary">
+		        <div class="product-form__buttons so-space-y-2">
+		          {%- render 'so-ui' with 'button-atc', btn_text_custom: btn_text_custom, shop_pt_id_obj: shop_pt_id_obj, atc_upsell_type: atc_upsell_type -%}
+
+		          {%- if show_dynamic_checkout -%}
+		            {{ form | payment_button }}
+		          {%- endif -%}
+		        </div>
+	        </div>
+	      {%- endform -%}
+	    </so-product-form>
+    </div>
+
+{% endcase %}

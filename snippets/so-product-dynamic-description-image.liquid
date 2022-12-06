@@ -1,0 +1,22 @@
+{% comment %}
+    Renders dynamic product media inside description
+
+    Accepts:
+    - target: {String} Target data attribute
+    - media: {Object} Product Media object
+
+    Usage:
+    {% render 'so-product-dynamic-description-image',
+      target: 'so-dynamic-dynamic-image',
+      media: media
+    %}
+{% endcomment %}
+<script>
+    ;(function() {
+        const target = document.querySelector('[data-{{ target }}]');
+        const template = document.createElement('template')
+        template.innerHTML = '{{ media }}'
+
+        target.replaceWith(template.content.firstChild)
+    })();
+</script>

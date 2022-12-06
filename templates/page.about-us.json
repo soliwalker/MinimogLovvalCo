@@ -8,6 +8,7 @@
     },
     "50620393-efc1-408b-aaef-f853a0bd8d39": {
       "type": "image-with-text-2",
+      "disabled": true,
       "settings": {
         "container": "w-full",
         "hero_size": "medium",
@@ -29,46 +30,6 @@
         "button_style": "sf__btn-primary",
         "button_size": "",
         "use_content_above": false,
-        "custom_class": ""
-      }
-    },
-    "5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4": {
-      "type": "custom-content",
-      "blocks": {
-        "template--17173111439670__5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4-1670320519e3b462ea-0": {
-          "type": "text",
-          "settings": {
-            "title": "Unique, meaningful & thoughtful gifts for everyone.",
-            "subheading": "We are a small (but formidable) family, whose mission is to inspire others by performing little but meaningful acts of kindness every day.",
-            "text": "<p>Spoiling, treating, and 'WOW-ing' the people you love has never been easier.<br\/>Vast Catalog Of Unique Presents for One-Of-A-Kind Souls. Explore our Lovval Gift Kits. All she wants is a Lovval Gift.<\/p>",
-            "width": "100%",
-            "alignment": "center",
-            "align_text": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "button_label": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "block_custom_class": ""
-          }
-        }
-      },
-      "block_order": [
-        "template--17173111439670__5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4-1670320519e3b462ea-0"
-      ],
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "description": "",
-        "header_alignment": "center",
-        "container": "container-fluid",
-        "background_color": "",
-        "gap": 30,
-        "use_scroll_mobile": false,
-        "gap_mobile": 16,
-        "padding_top": 0,
-        "padding_bottom": 0,
         "custom_class": ""
       }
     },
@@ -107,6 +68,46 @@
       "block_order": [
         "template--14672545153111__fa611d09-1c90-4bea-bf1e-e0e72ce52b8b-1664954427b3df55bc-0",
         "template--14672545153111__fa611d09-1c90-4bea-bf1e-e0e72ce52b8b-1664954427b3df55bc-1"
+      ],
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "description": "",
+        "header_alignment": "center",
+        "container": "container-fluid",
+        "background_color": "",
+        "gap": 30,
+        "use_scroll_mobile": false,
+        "gap_mobile": 16,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    },
+    "5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4": {
+      "type": "custom-content",
+      "blocks": {
+        "template--17173111439670__5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4-1670320519e3b462ea-0": {
+          "type": "text",
+          "settings": {
+            "title": "Unique, meaningful & thoughtful gifts for everyone.",
+            "subheading": "We are a small (but formidable) family, whose mission is to inspire others by performing little but meaningful acts of kindness every day.",
+            "text": "<p>Spoiling, treating, and 'WOW-ing' the people you love has never been easier.<br\/>Vast Catalog Of Unique Presents for One-Of-A-Kind Souls. Explore our Lovval Gift Kits. All she wants is a Lovval Gift.<\/p>",
+            "width": "100%",
+            "alignment": "center",
+            "align_text": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "block_custom_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--17173111439670__5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4-1670320519e3b462ea-0"
       ],
       "settings": {
         "heading": "",
@@ -246,8 +247,8 @@
   "order": [
     "main",
     "50620393-efc1-408b-aaef-f853a0bd8d39",
-    "5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4",
     "fa611d09-1c90-4bea-bf1e-e0e72ce52b8b",
+    "5fbf44eb-0991-4a6c-8143-2e7ab6fba9d4",
     "21ea76d4-4687-4dcd-bc16-9665f9b671de",
     "ac85d910-811c-4189-9051-ca0ed8f58ddf",
     "16703212989b06d03d"

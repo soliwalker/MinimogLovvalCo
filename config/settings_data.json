@@ -244,7 +244,7 @@
           "ad3c3166-8ef1-441a-832a-e4c7b30d78ab": {
             "type": "menu",
             "settings": {
-              "menu": "footer",
+              "menu": "footer-quicklinks",
               "title": "<b>QUICK LINKS<\/b>",
               "width": "33%",
               "order_first": false,
@@ -254,7 +254,7 @@
           "9191e286-5f7f-4a14-8e7a-3f66ca11cc88": {
             "type": "menu",
             "settings": {
-              "menu": "",
+              "menu": "footer-intheknow",
               "title": "<b>IN THE KNOW<\/b>",
               "width": "33%",
               "order_first": false,

@@ -77,6 +77,8 @@
     "pcard_title_line_clamp": "2",
     "pcard_show_lowest_prices": false,
     "variant_option_design_default": "button",
+    "variant_option_title1": "Title",
+    "variant_option_design1": "image",
     "variant_option_title2": "Recipient",
     "variant_option_design2": "dropdown",
     "variant_option_design3": "dropdown",

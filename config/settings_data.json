@@ -24,7 +24,7 @@
     "color_header_bg": "#ffffff",
     "color_header_link": "{{ shop.brand.colors.primary[0].background }}",
     "color_header_transparent": "{{ shop.brand.colors.primary[0].background }}",
-    "bg_cart_wishlist_count": "{{ shop.brand.colors.primary[0].background }}",
+    "bg_cart_wishlist_count": "#e84863",
     "color_menu_bar_bg": "{{ shop.brand.colors.primary[0].background }}",
     "color_menu_bar_text": "#f8f8f8",
     "color_footer_bg": "#ffffff",

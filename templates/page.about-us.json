@@ -10,7 +10,7 @@
       "type": "image-with-text-2",
       "settings": {
         "container": "w-full",
-        "hero_size": "small",
+        "hero_size": "medium",
         "show_overlay": false,
         "image": "shopify:\/\/shop_images\/Lovval_Co_african-american-father-opening-gift-from-his-son-2022-01-18-23-46-55-utc0088.png",
         "bg_position": "center",

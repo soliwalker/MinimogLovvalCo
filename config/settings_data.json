@@ -519,7 +519,7 @@
           "show_loox_count": true,
           "show_loox_from": 60,
           "rating_text": "<p>Our customers say <strong>Excellent<\/strong> 4.4 out of 5<\/p>",
-          "custom_css": ""
+          "custom_css": "main#MainContent {background-color: #fff;}"
         }
       },
       "product-template-shineon-e-and-g-upsell": {

@@ -4,11 +4,11 @@
       "type": "image-with-text-2",
       "settings": {
         "container": "w-full",
-        "hero_size": "small",
+        "hero_size": "medium",
         "show_overlay": false,
         "image": "{{ shop.brand.cover_image }}",
         "bg_position": "center",
-        "image_link": "shopify:\/\/collections\/all",
+        "image_link": "shopify:\/\/collections\/shop-all",
         "parallax": false,
         "content_in_container": false,
         "content_position": "center middle",

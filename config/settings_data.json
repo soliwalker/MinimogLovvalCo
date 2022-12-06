@@ -470,8 +470,8 @@
         "settings": {
           "show_items_quantity": false,
           "cart_timer_enable": true,
-          "cart_title_timer_bg": "#ffffff",
-          "cart_timer_minute": 600,
+          "cart_title_timer_bg": "#e8edf1",
+          "cart_timer_minute": 630,
           "cart_timer_bg": "{{ shop.brand.colors.primary[0].foreground }}",
           "cart_timer_color": "#ffffff",
           "tag_switch": "",

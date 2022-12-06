@@ -14,7 +14,7 @@
     "color_btn_secondary_border": "#ffe96e",
     "color_btn_secondary_text": "#ffe96e",
     "color_btn_bg_hover": "#fff2a9",
-    "color_btn_text_hover": "#ffffff",
+    "color_btn_text_hover": "#68022c",
     "product_title_color": "{{ shop.brand.colors.primary[0].background }}",
     "prod_sale_price_color": "#9b9b9b",
     "prod_regular_price_color": "{{ shop.brand.colors.primary[0].background }}",

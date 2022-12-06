@@ -191,6 +191,17 @@
           "settings": {
           }
         },
+        "5249c9ca-4778-4d11-969d-80b6033d1123": {
+          "type": "shipping",
+          "settings": {
+            "show_delivery_times": true,
+            "deliver_text": "Estimated Delivery:",
+            "deliver_days": "7",
+            "date_format": "%b %d",
+            "show_shipping_text": true,
+            "shipping_text": "<p><strong>Free Shipping & Returns: <\/strong>On all orders over $75<\/p>"
+          }
+        },
         "template--14672545579095__fa2c5b5b-2910-44dd-b78f-acc1142e2f25-166755287354327b49-3": {
           "type": "buy_buttons",
           "settings": {
@@ -204,6 +215,7 @@
         "template--14672545579095__fa2c5b5b-2910-44dd-b78f-acc1142e2f25-166755287354327b49-0",
         "template--14672545579095__fa2c5b5b-2910-44dd-b78f-acc1142e2f25-166755287354327b49-1",
         "template--14672545579095__fa2c5b5b-2910-44dd-b78f-acc1142e2f25-166755287354327b49-2",
+        "5249c9ca-4778-4d11-969d-80b6033d1123",
         "template--14672545579095__fa2c5b5b-2910-44dd-b78f-acc1142e2f25-166755287354327b49-3"
       ],
       "settings": {

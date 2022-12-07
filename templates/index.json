@@ -17,7 +17,7 @@
         "text_color": "white",
         "title": "",
         "subtitle": "",
-        "text": "",
+        "text": "<p><\/p>",
         "button_label": "",
         "button_link": "",
         "button_style": "sf__btn-primary",
@@ -107,8 +107,9 @@
         "template--14672545579095__ea0a0105-fb1a-43ee-9bab-d236de2412a5-1667552467a668cbf5-0": {
           "type": "collection_block",
           "settings": {
-            "collection": "all",
-            "title": "Shop {{ block.settings.collection.title }} Best Sellers"
+            "collection": "shop-all",
+            "title": "Shop {{ block.settings.collection.title }}",
+            "item_image": "{{ block.settings.collection.image }}"
           }
         },
         "template--14672545579095__ea0a0105-fb1a-43ee-9bab-d236de2412a5-1667552467a668cbf5-1": {
@@ -266,7 +267,7 @@
           "type": "product",
           "settings": {
             "heading": "",
-            "description": "",
+            "description": "<p><\/p>",
             "product": "customizable-hummingbird-god-has-you-in-his-arms-luxury-necklace"
           }
         },
@@ -274,7 +275,7 @@
           "type": "product",
           "settings": {
             "heading": "",
-            "description": "",
+            "description": "<p><\/p>",
             "product": "granddaughter-your-smile-makes-me-smile-1"
           }
         },
@@ -282,7 +283,7 @@
           "type": "product",
           "settings": {
             "heading": "{{ block.settings.product.title }}",
-            "description": "",
+            "description": "<p><\/p>",
             "product": "i-have-you-in-my-heart-luxury-necklace"
           }
         }
@@ -330,7 +331,7 @@
         "text_color": "dark",
         "title": "CHAIN CHOKER",
         "subtitle": "THE ORIGINAL",
-        "text": "",
+        "text": "<p><\/p>",
         "button_label": "SHOP NOW",
         "button_link": "",
         "button_style": "sf__btn-secondary",

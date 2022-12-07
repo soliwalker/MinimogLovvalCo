@@ -40,8 +40,8 @@
             "align_text": "center",
             "text_size": "medium",
             "text_color": "black",
-            "button_label": "DISCOVER ALL our heartfelt jewelry",
-            "button_link": "shopify:\/\/collections\/all",
+            "button_label": "EXPLORE ALL COLLECTIONS",
+            "button_link": "shopify:\/\/collections\/shop-all",
             "button_style": "sf__btn-primary",
             "button_size": "",
             "block_custom_class": ""

@@ -24,7 +24,7 @@
         "text_color": "white",
         "title": "",
         "subtitle": "",
-        "text": "",
+        "text": "<p><\/p>",
         "button_label": "",
         "button_link": "",
         "button_style": "sf__btn-primary",
@@ -91,7 +91,7 @@
           "type": "text",
           "settings": {
             "title": "Unique, meaningful & thoughtful gifts for everyone.",
-            "subheading": "We are a small (but formidable) family, whose mission is to inspire others by performing little but meaningful acts of kindness every day.",
+            "subheading": "We are a small family, whose mission is to inspire others by performing little but meaningful acts of kindness every day.",
             "text": "<p>Spoiling, treating, and 'WOW-ing' the people you love has never been easier.<br\/>Vast Catalog Of Unique Presents for One-Of-A-Kind Souls. Explore our Lovval Gift Kits. All she wants is a Lovval Gift.<\/p>",
             "width": "100%",
             "alignment": "center",

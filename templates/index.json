@@ -116,14 +116,16 @@
           "type": "collection_block",
           "settings": {
             "collection": "for-your-daughter",
-            "title": "Shop {{ block.settings.collection.title }}"
+            "title": "Shop {{ block.settings.collection.title }}",
+            "item_image": "{{ block.settings.collection.image }}"
           }
         },
         "template--14672545579095__ea0a0105-fb1a-43ee-9bab-d236de2412a5-1667552467a668cbf5-2": {
           "type": "collection_block",
           "settings": {
             "collection": "for-your-granddaughter",
-            "title": "Shop {{ block.settings.collection.title }}"
+            "title": "Shop {{ block.settings.collection.title }}",
+            "item_image": "{{ block.settings.collection.image }}"
           }
         },
         "template--14672545579095__ea0a0105-fb1a-43ee-9bab-d236de2412a5-1667552467a668cbf5-3": {

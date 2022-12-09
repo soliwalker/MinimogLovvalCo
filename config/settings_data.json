@@ -92,7 +92,7 @@
     "social_facebook_link": "https:\/\/facebook.com\/",
     "social_pinterest_link": "https:\/\/pinterest.com\/",
     "social_instagram_link": "https:\/\/instagram.com\/",
-    "enable_cart_drawer": false,
+    "enable_cart_drawer": true,
     "cart_drawer_show_accelerated_button": false,
     "cart_notes_enable": false,
     "cart_estimate_shipping": false,

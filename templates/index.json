@@ -209,7 +209,7 @@
           "type": "buy_buttons",
           "settings": {
             "show_quantity_selector": true,
-            "show_atc_button": false,
+            "show_atc_button": true,
             "show_dynamic_checkout": true
           }
         }

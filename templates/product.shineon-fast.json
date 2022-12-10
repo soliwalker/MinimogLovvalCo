@@ -1,1 +1,82 @@
-{"sections":{"main":{"type":"so-main-product","blocks":{"title":{"type":"title","settings":{}},"caption":{"type":"text","settings":{"text":"{{ product.metafields.descriptors.subtitle.value }}","text_style":"subtitle"}},"price":{"type":"price","settings":{"show_tax_disclaimer":false}},"variant_picker":{"type":"variant_picker","settings":{"picker_type":"button"}},"addon_gift_wrap":{"type":"addon_gift_wrap","settings":{}},"quantity_selector":{"type":"quantity_selector","settings":{}},"buy_buttons":{"type":"buy_buttons","settings":{}},"description":{"type":"description","settings":{}}},"block_order":["title","variant_picker","price","addon_gift_wrap","quantity_selector","buy_buttons","caption","description"],"settings":{}},"trustpilot":{"type":"so-product-trustpilot","settings":{}}},"order":["main","trustpilot"]}
+{
+  "sections": {
+    "main": {
+      "type": "so-main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_disclaimer": true
+          }
+        },
+        "addon_gift_wrap": {
+          "type": "addon_gift_wrap",
+          "settings": {
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "product_atc_button_background_color": "#ee7a78",
+            "product_atc_button_text_color": "#ffffff"
+          }
+        },
+        "caption": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.descriptors.subtitle.value }}",
+            "text_style": "subtitle"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "variant_picker",
+        "price",
+        "addon_gift_wrap",
+        "quantity_selector",
+        "buy_buttons",
+        "caption",
+        "description"
+      ],
+      "settings": {
+        "product_banner_title": "Exclusive Sale - %percent_off% Off Today",
+        "participate_cro": false,
+        "heading_font": "assistant_n4",
+        "is_debug_on": false
+      }
+    },
+    "trustpilot": {
+      "type": "so-product-trustpilot",
+      "disabled": true,
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main",
+    "trustpilot"
+  ]
+}

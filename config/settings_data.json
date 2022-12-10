@@ -408,7 +408,7 @@
           "add_to_cart_font_style": "700",
           "add_to_cart_scroll_fixed": true,
           "add_to_cart_append_line_item_subtotal": false,
-          "add_to_cart_icon": true,
+          "add_to_cart_icon": false,
           "use_shineon_cart_page_eng": true,
           "use_shineon_cart_page_bu": true,
           "express_checkout": false,

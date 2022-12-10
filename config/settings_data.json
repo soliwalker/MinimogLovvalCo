@@ -425,8 +425,8 @@
           "payment_option_apple_pay": true,
           "payment_option_amazon": true,
           "payment_option_paypal": true,
-          "payment_option_ideal": true,
-          "payment_option_bancontact": true,
+          "payment_option_ideal": false,
+          "payment_option_bancontact": false,
           "primary_color": "#00b70f",
           "upload_button_text_color": "#ffffff",
           "upload_button_bg_color": "#0088ee",
@@ -463,7 +463,7 @@
           "snippet_below_description": "",
           "reviews_title": "",
           "reviews_stars_color": "#00b679",
-          "show_loox_stars": true,
+          "show_loox_stars": false,
           "show_loox_count": true
         }
       },

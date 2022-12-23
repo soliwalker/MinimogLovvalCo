@@ -214,7 +214,7 @@
           "logo_max_width": 150,
           "sticky_logo_max_width": 160,
           "mobile_logo_max_width": 200,
-          "main_menu": "header-default-1-2",
+          "main_menu": "alternative-1-2",
           "secondary_menu": "header-default-2-2",
           "mobile_menu": "main-menu",
           "uppercase_parent_level": true,

@@ -6,10 +6,10 @@ if (!customElements.get('f-media-gallery')) {
 				xrButton: '[data-first-xr-button]',
 				mainSlider: 'f-swiper-carousel-component'
 			}
-			this.Helpers = window.Foxify.Helpers
+			this.Utils = window.Foxify.Utils
 		}
 		connectedCallback() {
-			this.domNodes = this.Helpers.queryDomNodes(this.selectors, this)
+			this.domNodes = this.Utils.queryDomNodes(this.selectors, this)
 			this.mediaLayout = this.dataset.layout
 			if (this.domNodes.mainSlider) {
 				this.check = setInterval(() => {
@@ -30,7 +30,7 @@ if (!customElements.get('f-media-gallery')) {
 		}
 
 		playActiveMedia(selected) {
-			window.pauseAllMedia()
+			window.Foxify.Utils.pauseAllMedia()
 			this.activeMedia = selected
 			this.activeMediaType = this.activeMedia.dataset.mediaType
 			const deferredMedia = selected.querySelector('f-deferred-media')

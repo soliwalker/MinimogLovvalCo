@@ -8,7 +8,11 @@ if (!customElements.get('tabs-component')) {
 				tabNavs: ['[role="tab"]'],
 				tabNavGroup: '.f-tabs__header'
 			}
-			this.domNodes = window.Foxify.Helpers.queryDomNodes(this.selectors, this)
+			this.btnClass = {
+				primary: 'f:gs-primary-button',
+				outline: 'f:gs-outline-button',
+			}
+			this.domNodes = window.Foxify.Utils.queryDomNodes(this.selectors, this)
 
 			this.selectedIndex = 0
 			this.selectedTab = this.domNodes.tabPanels[this.selectedIndex]
@@ -46,10 +50,20 @@ if (!customElements.get('tabs-component')) {
 				const newTab = tabPanels?.[tabIndex]
 				this.setAttribute('data-selected', tabIndex)
 
-				tabNavs.forEach(nav => nav.setAttribute('aria-selected', false))
+				tabNavs.forEach( (nav) => {
+					nav.setAttribute('aria-selected', false)
+					if ( this.dataset.style === 'inline-style-2' ) {
+						nav.classList.remove(this.btnClass.primary)
+						nav.classList.add(this.btnClass.outline)
+					}
+				})
 				this.selectedTab?.setAttribute('hidden', '')
 
 				newHeader?.setAttribute('aria-selected', true)
+				if ( this.dataset.style === 'inline-style-2' ) {
+					newHeader.classList.add(this.btnClass.primary)
+					newHeader.classList.remove(this.btnClass.outline)
+				}
 				newTab?.removeAttribute('hidden')
 
 				this.selectedIndex = tabIndex

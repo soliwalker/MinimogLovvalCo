@@ -1,23 +1,32 @@
-if (!customElements.get('f-variant-selects')) {
-	class VariantSelects extends HTMLElement {
+if (!customElements.get('f-variant-picker')) {
+	class VariantPicker extends HTMLElement {
 		constructor() {
 			super();
 			this.selectors = {
 				productSku: '[data-product-sku]',
 				productAvailability: '[data-product-availability]',
+        selectedValues: ['.f\\:variant-picker__selected-value']
 			}
 
-			this.Helpers = window.Foxify.Helpers
+			this.Utils = window.Foxify.Utils
+			this.Extensions = window.Foxify.Extensions
+			this.optionsSwatches = window.Foxify.Extensions ? window.Foxify.Extensions.optionsSwatches : {}
+			this.productId = this.dataset.productId
 			this.sectionId = this.dataset.sectionId
-			this.section = document.getElementById(`f-${this.sectionId}`)
-			this.productForm = this.section.querySelector('f-product-form')
-			this.domNodes = this.Helpers.queryDomNodes(this.selectors, this.section)
+			this.section = document.querySelector(`.f-${this.sectionId}`)
+			this.productForm = this.section && this.section.querySelectorAll('f-product-form')
+			this.domNodes = this.Utils.queryDomNodes(this.selectors, this.section)
 			this.addEventListener('change', this.onVariantChange);
+
+			if (this.optionsSwatches && this.optionsSwatches.enabled) {
+				this.initOptionSwatches()
+			}
 		}
 
 		onVariantChange() {
 			this.updateOptions();
 			this.updateMasterId();
+			this.updateSelectedValue();
 			this.toggleAddButton(true, '', false);
 			this.updatePickupAvailability();
 			this.removeErrorMessage();
@@ -30,13 +39,18 @@ if (!customElements.get('f-variant-selects')) {
 				this.updateURL();
 				this.updateVariantInput();
 				this.renderProductInfo();
-				this.updateShareUrl();
-				this.updateProductMeta()
+				this.updateProductMeta();
 			}
+			window.Foxify.Events.emit(`${this.productId}__VARIANT_CHANGE`, this.currentVariant, this)
 		}
 
 		updateOptions() {
-			this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
+			const fields = Array.from(this.querySelectorAll('.f\\:variant-picker__input'));
+			this.options = fields.map((field) => {
+				const fieldType = field.dataset.fieldType
+				if (fieldType === 'button') return Array.from(field.querySelectorAll('input')).find((radio) => radio.checked).value
+				return field.querySelector('select') ? field.querySelector('select').value : '';
+			});
 		}
 
 		updateMasterId() {
@@ -45,6 +59,14 @@ if (!customElements.get('f-variant-selects')) {
 					return this.options[index] === option;
 				}).includes(false);
 			});
+		}
+
+    updateSelectedValue() {
+      if (this.options && this.domNodes.selectedValues.length) {
+        this.domNodes.selectedValues.map(((op, index) => {
+          op.textContent = this.options[index]
+        }))
+      }
 		}
 
 		updateMedia() {
@@ -61,16 +83,10 @@ if (!customElements.get('f-variant-selects')) {
 			window.history.replaceState({ }, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
 		}
 
-		updateShareUrl() {
-			const shareButton = document.getElementById(`Share-${this.dataset.section}`);
-			// if (!shareButton || !shareButton.updateUrl) return;
-			// shareButton.updateUrl(`${window.shopUrl}${this.dataset.url}?variant=${this.currentVariant.id}`);
-		}
-
 		updateVariantInput() {
 			const productForms = document.querySelectorAll(`#product-form-${this.sectionId}, #product-form-installment-${this.sectionId}`);
 			productForms.forEach((productForm) => {
-				const input = productForm.querySelector('input[name="id"]');
+				const input = productForm.querySelector('[name="id"]');
 				input.value = this.currentVariant.id;
 				input.dispatchEvent(new Event('change', { bubbles: true }));
 			});
@@ -89,7 +105,11 @@ if (!customElements.get('f-variant-selects')) {
 		}
 
 		removeErrorMessage() {
-			if (this.productForm) this.productForm.handleErrorMessage();
+			if (this.productForm) {
+				this.productForm.forEach((form) => {
+					form.handleErrorMessage();
+				})
+			}
 		}
 
 		renderProductInfo() {
@@ -115,7 +135,7 @@ if (!customElements.get('f-variant-selects')) {
 				compareAtPrice,
 				saleBadge,
 				saleAmount
-			} = this.Helpers.queryDomNodes(selectors, this.section)
+			} = this.Utils.queryDomNodes(selectors, this.section)
 
 			const {compare_at_price, price, unit_price_measurement} = this.currentVariant
 
@@ -137,12 +157,12 @@ if (!customElements.get('f-variant-selects')) {
 			}
 
 			if (priceWrapper) priceWrapper.classList.remove(classes.visibilityHidden)
-			if (salePrice) salePrice.innerHTML = this.Helpers.formatMoney(price, money_format)
+			if (salePrice) salePrice.innerHTML = this.Utils.formatMoney(price, money_format)
 
-			if (compareAtPrice?.length && compare_at_price > price) {
-				compareAtPrice.forEach(item => item.innerHTML = this.Helpers.formatMoney(compare_at_price, money_format))
+			if (compareAtPrice && compareAtPrice.length && compare_at_price > price) {
+				compareAtPrice.forEach(item => item.innerHTML = this.Utils.formatMoney(compare_at_price, money_format))
 			} else {
-				compareAtPrice.forEach(item => item.innerHTML = this.Helpers.formatMoney(price, money_format))
+				compareAtPrice.forEach(item => item.innerHTML = this.Utils.formatMoney(price, money_format))
 			}
 
 			if (saleBadge && compare_at_price > price) {
@@ -154,15 +174,15 @@ if (!customElements.get('f-variant-selects')) {
 					value = Math.round(saving) + '%'
 				}
 				if (type === 'fixed_amount') {
-					value = this.Helpers.formatMoney(compare_at_price - price, money_format)
+					value = this.Utils.formatMoney(compare_at_price - price, money_format)
 				}
 
-				saleAmount.textContent = value
+				saleAmount.innerHTML = value
 			}
 
 			if (unit_price_measurement && unitPrice) {
 				unitPrice.classList.remove(classes.hide)
-				const unitPriceContent = `<span>${this.Helpers.formatMoney(this.currentVariant.unit_price, money_format)}</span>/<span data-unit-price-base-unit>${this._getBaseUnit()}</span>`
+				const unitPriceContent = `<span>${this.Utils.formatMoney(this.currentVariant.unit_price, money_format)}</span>/<span data-unit-price-base-unit>${this._getBaseUnit()}</span>`
 				unitPrice.innerHTML = unitPriceContent
 			} else {
 				unitPrice?.classList.add(classes.hide)
@@ -203,53 +223,74 @@ if (!customElements.get('f-variant-selects')) {
 		toggleAddButton(disable = true, text, modifyClass = true) {
 			if (!this.productForm) return;
 
-			const addButton = this.productForm.querySelector('[name="add"]')
-			if (!addButton) return;
+			this.productForm.forEach(form => {
+				const addButton = form.querySelector('[name="add"]')
+				if (!addButton) return;
 
-			const addButtonText = addButton.querySelector('.f\\:btn__label')
-			if (disable) {
-				addButton.setAttribute('disabled', 'disabled')
-				if (text) addButtonText.textContent = text
-			} else {
-				addButton.removeAttribute('disabled')
-				addButtonText.textContent = window.Foxify.Strings.addToCart
-			}
+				const addButtonText = addButton.querySelector('.f\\:btn__label')
+				if (disable) {
+					addButton.setAttribute('disabled', 'disabled')
+					if (text) addButtonText.textContent = text
+				} else {
+					addButton.removeAttribute('disabled')
+					addButtonText.textContent = window.Foxify.Strings.addToCart
+				}
 
-			if (!modifyClass) return;
+				if (!modifyClass) return;
+			})
+
 		}
 
 		setUnavailable() {
-			const addButton = this.productForm.querySelector('[name="add"]')
-			if (addButton) {
-				const addButtonText = addButton.querySelector('.f\\:btn__label')
-				addButtonText.textContent = window.Foxify.Strings.unavailable
-			}
+			this.productForm.forEach(form => {
+				const addButton = form.querySelector('[name="add"]')
+				if (addButton) {
+					const addButtonText = addButton.querySelector('.f\\:btn__label')
+					addButtonText.textContent = window.Foxify.Strings.unavailable
+				}
 
-			const priceWrapper = this.section.querySelector('.f\\:price')
-			if (priceWrapper) priceWrapper.classList.add('f:visibility-hidden')
+				const priceWrapper = this.section.querySelector('.f\\:price')
+				if (priceWrapper) priceWrapper.classList.add('f:visibility-hidden')
+			})
 		}
+
+		initOptionSwatches() {
+			const {optionsSwatches} = window.Foxify.Extensions
+			const optionNodes = this.querySelectorAll('.f\\:variant-picker__option')
+			optionNodes.length && optionNodes.forEach(optNode => {
+				let customImage, customColor_1, customColor_2
+				const {value, fallbackValue, optionType} = optNode.dataset
+				if (optionType === 'color') {
+					const check = optionsSwatches.options.find(c => c.title.toLowerCase() === value.toLowerCase())
+					customColor_1 = check ? check.color_1 : ''
+					customColor_2 = check ? check.color_2 : ''
+					customImage = check ? check.image : ''
+
+					if (customColor_1) {
+						optNode.style.setProperty('--option-color-1', `${customColor_1}`)
+					}
+					if (customColor_2) {
+						optNode.style.setProperty('--option-color-2', `${customColor_2}`)
+					}
+
+					if (!customColor_1 && !customColor_2 && window.Foxify.Utils.isValidColor(fallbackValue)) {
+						optNode.style.setProperty('--option-color-1', `${fallbackValue}`)
+					}
+
+					if (customImage) {
+						optNode.querySelector('label').classList.add('has-image')
+						optNode.querySelector('label').style.backgroundImage = `url(${window.Foxify.Utils.getSizedImageUrl(customImage, '100x100')})`
+					}
+					return false;
+				}
+			})
+		}
+
 
 		getVariantData() {
 			this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
 			return this.variantData;
 		}
 	}
-
-	customElements.define('f-variant-selects', VariantSelects);
-
-	if (!customElements.get('f-variant-buttons')) {
-		class VariantRadios extends VariantSelects {
-			constructor() {
-				super();
-			}
-
-			updateOptions() {
-				const options = Array.from(this.querySelectorAll('.f\\:variant-picker__input'));
-				this.options = options.map((option) => {
-					return Array.from(option.querySelectorAll('input')).find((radio) => radio.checked).value;
-				});
-			}
-		}
-		customElements.define('f-variant-buttons', VariantRadios);
-	}
+	customElements.define('f-variant-picker', VariantPicker);
 }

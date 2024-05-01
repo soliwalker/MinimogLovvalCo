@@ -11,7 +11,6 @@ This file can be re-written at any time. Please do not update this file directly
     endif
     assign cardStyle = card_style
     assign ratio = image_ratio
-    assign textAlign = text_align | default: 'left'
     assign showBlog = articleCard.showBlog
     assign showDate = articleCard.showDate
     assign showReadmore = articleCard.showReadmore
@@ -22,12 +21,13 @@ This file can be re-written at any time. Please do not update this file directly
     if ratio == 'adapt'
         assign ratio = article.image.aspect_ratio
     endif
-    if textAlign == nil or textAlign == 'inherit'
-        assign textAlign = articleCard.textAlign
-    endif
 
-    assign default_title = 'foxify.onboarding.blog_title' | t
-    assign default_date = 'now' | date: "%b %d, %y"
+    if ratio == '1:1'
+        assign ratio = '1'
+    endif
+		if text_align == '' or text_align == null or text_align == 'undefined'
+				assign text_align = articleCard.textAlign
+		endif
 
     if cardStyle == nil or cardStyle == 'inherit'
         assign cardStyle = articleCard.style
@@ -37,10 +37,23 @@ This file can be re-written at any time. Please do not update this file directly
     if articleCard.backgroundColor.value != nil or articleCard.backgroundColor.value != blank
         assign backgroundColor = articleCard.backgroundColor.value
     endif
+
+    assign locales = shop.metafields.foxify.locales.value
+    assign current_locale = request.locale.iso_code
+    assign primary_locale = current_locale
+    for locale in shop.published_locales
+        if locale.primary
+            assign primary_locale = locale.iso_code
+            break
+        endif
+    endfor
+    assign translation = locales[current_locale] | default: locales[primary_locale]
+    assign default_title = translation.onboarding.blog_title
+    assign default_date = 'now' | date: "%b %d, %y"
 %}
-<div class="{{ SHORT_ID_KEY }}:article-card {{ SHORT_ID_KEY }}:image--hover-effect {{ SHORT_ID_KEY }}:article-card--align-{{ textAlign }} {{ SHORT_ID_KEY }}:article-card--style-{{ cardStyle | default: '1' }} {{ SHORT_ID_KEY }}:relative{% if backgroundColor != blank %} {{ SHORT_ID_KEY }}:article-card--has-bg{% endif %}">
+<div class="{{ SHORT_ID_KEY }}:article-card {{ SHORT_ID_KEY }}:image--hover-effect {{ SHORT_ID_KEY }}:article-card--align-{{ text_align }} {{ SHORT_ID_KEY }}:article-card--style-{{ cardStyle | default: '1' }} {{ SHORT_ID_KEY }}:relative{% if backgroundColor != blank %} {{ SHORT_ID_KEY }}:article-card--has-bg{% endif %}">
   <div class="{{ SHORT_ID_KEY }}:article-card__image {{ SHORT_ID_KEY }}:block {{ SHORT_ID_KEY }}:overflow-hidden {{ SHORT_ID_KEY }}:relative {{ SHORT_ID_KEY }}:card">
-      <a href="{{ article.url }}" class="{{ SHORT_ID_KEY }}:full-width-link"><span class="visually-hidden">{{ article.title | default: default_title }}</span></a>
+      <a href="{{ article.url }}" class="{{ SHORT_ID_KEY }}:full-width-link"><span class="f:visually-hidden">{{ article.title | default: default_title }}</span></a>
       <{{ SHORT_ID_KEY }}-image class="{{ SHORT_ID_KEY }}:image" data-image-loading style="--f-aspect-ratio: {{ ratio | default: 1 }}">
           {% if article.image %}
               <img
@@ -92,14 +105,15 @@ This file can be re-written at any time. Please do not update this file directly
                   {{ article.content | strip_html | truncatewords: 22 }}
               {% endif %}
               {% if onboarding %}
-                  {{ 'foxify.onboarding.blog_excerpt' | t }}
+                  {{ translation.onboarding.blog_excerpt }}
               {% endif %}
           </div>
       {% endif %}
       {% if showReadmore %}
+          {% assign ariaLabel = translation.blogs.article.read_more_title | replace: '{{ title }}', article.title %}
           <a href="{{ article.url }}" class="{{ SHORT_ID_KEY }}:gs-link-button {{ SHORT_ID_KEY }}:article-card__readmore {{ SHORT_ID_KEY }}:text-normal"
-             aria-label="{{ 'foxify.blogs.article.read_more_title' | t: title: article.title }}">
-              {{ 'foxify.blogs.article.read_more' | t }}
+             aria-label="{{ ariaLabel }}">
+              {{ translation.blogs.article.read_more }}
           </a>
       {% endif %}
   </div>

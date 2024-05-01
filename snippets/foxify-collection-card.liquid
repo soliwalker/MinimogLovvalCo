@@ -26,16 +26,15 @@ This file can be re-written at any time. Please do not update this file directly
 
     assign ratio = image_ratio
     assign cardStyle = card_style
-    assign textAlign = text_align
     assign backgroundColor = ''
 
     if cardStyle == nil or cardStyle == 'inherit'
         assign cardStyle = collectionCard.style
     endif
 
-    if textAlign == nil or textAlign == 'inherit'
-        assign textAlign = collectionCard.textAlign
-    endif
+		if text_align == '' or text_align == null or text_align == 'undefined'
+				assign text_align = collectionCard.textAlign
+		endif
 
     if ratio == nil or ratio == 'inherit'
         assign ratio = collectionCard.imageRatio
@@ -49,17 +48,31 @@ This file can be re-written at any time. Please do not update this file directly
             assign ratio = collection_image.aspect_ratio
         endif
     endif
+    if ratio == '1:1'
+        assign ratio = '1'
+    endif
 
     if collectionCard.backgroundColor.value != nil or collectionCard.backgroundColor.value != blank
         assign backgroundColor = collectionCard.backgroundColor.value
     endif
 
     assign collection_title = title | default: collection.title
-    assign product_count = collection.all_products_count | default: 2
+    assign product_count = collection.all_products_count | default: 0
+
+    assign locales = shop.metafields.foxify.locales.value
+    assign current_locale = request.locale.iso_code
+    assign primary_locale = current_locale
+    for locale in shop.published_locales
+        if locale.primary
+            assign primary_locale = locale.iso_code
+            break
+        endif
+    endfor
+    assign translation = locales[current_locale] | default: locales[primary_locale]
 -%}
 
 <div
-    class="{{ SHORT_ID_KEY }}:collection-card {{ SHORT_ID_KEY }}:collection-card--style-{{ cardStyle }} {{ SHORT_ID_KEY }}:collection-card--align-{{ textAlign }} {{ SHORT_ID_KEY }}:image--hover-effect{% if backgroundColor != blank %} {{ SHORT_ID_KEY }}:collection-card--has-bg{% endif %}"
+    class="{{ SHORT_ID_KEY }}:collection-card {{ SHORT_ID_KEY }}:collection-card--style-{{ cardStyle }} {{ SHORT_ID_KEY }}:collection-card--align-{{ text_align }} {{ SHORT_ID_KEY }}:image--hover-effect{% if backgroundColor != blank %} {{ SHORT_ID_KEY }}:collection-card--has-bg{% endif %}"
 >
     <a title="{{ collection.title }}" href="{{ collection.url | default: "#" }}" class="{{ SHORT_ID_KEY }}:collection-card__wrapper">
         {%- if cardStyle == '3' -%}
@@ -69,7 +82,7 @@ This file can be re-written at any time. Please do not update this file directly
             {% unless collection_image == blank %}
                 {% if image != blank %}
                     <{{ SHORT_ID_KEY }}-image class="{{ SHORT_ID_KEY }}:image {{ SHORT_ID_KEY }}:collection-card__image" data-image-loading style="--f-aspect-ratio: {{ ratio | default: 1 }}">
-                        <img src="{{ image }}" lazy="loading" width="{{ image_width }}" height="{{ image_height }}" />
+                        <img src="{{ image }}" loading="lazy" width="{{ image_width }}" height="{{ image_height }}" />
                     </{{ SHORT_ID_KEY }}-image>
                 {% else %}
                     <{{ SHORT_ID_KEY }}-image class="{{ SHORT_ID_KEY }}:image {{ SHORT_ID_KEY }}:collection-card__image" data-image-loading style="--f-aspect-ratio: {{ ratio | default: 1 }}">
@@ -98,12 +111,12 @@ This file can be re-written at any time. Please do not update this file directly
                     endif
                 %}
                 <div class="{{ SHORT_ID_KEY }}:collection-card__image" data-ratio="{{ aspect_ratio }}" style="--f-aspect-ratio: {{ aspect_ratio }}">
-                    {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
-                    {{ 'collection-' | append: current | placeholder_svg_tag: 'f:placeholder-svg f:image' }}
+                    {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}
+                    {{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'f:placeholder-svg' }}
                 </div>
             {% endunless %}
         </div>
-        {%- assign default_label = 'foxify.onboarding.collection_title' | t -%}
+        {%- assign default_label = translation.onboarding.collection_title -%}
         <div class="{{ SHORT_ID_KEY }}:collection-card__info">
             {%- if cardStyle != '3' -%}
                 <h3 class="{{ SHORT_ID_KEY }}:collection-card__title {{ SHORT_ID_KEY }}:gs-card-title {{ SHORT_ID_KEY }}:text-current">
@@ -113,7 +126,16 @@ This file can be re-written at any time. Please do not update this file directly
             {%- endif -%}
 
             {%- if cardStyle != '2' -%}
-                <div class="{{ SHORT_ID_KEY }}:collection-card__number-count">{{ 'foxify.sections.collection_list.product_count' | t: count: product_count }}</div>
+                <div class="{{ SHORT_ID_KEY }}:collection-card__number-count">
+                    {% liquid
+                        assign label = translation.sections.collection_list.product_count
+                        if product_count > 1
+                            echo label.other | replace: '{{ count }}', product_count
+                        else
+                            echo label.one | replace: '{{ count }}', product_count
+                        endif
+                    %}
+                </div>
             {%- endif -%}
 
             {%- if cardStyle == '4' -%}

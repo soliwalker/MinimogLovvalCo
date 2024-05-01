@@ -3,18 +3,45 @@ class FStickyHeader extends HTMLElement {
 		super()
 	}
 
+  static get observedAttributes() { return ['data-header-sticky', 'data-header-transparent']; }
 	connectedCallback() {
+    this.classes = {
+      headerSection: '.foxify-header',
+      sticky: 'f:header--sticky',
+      hidden: 'f:header--hidden',
+      animate: 'f:header--animate',
+      transparent: 'f:header--transparent',
+      headerTransparent: 'foxify-header--transparent',
+      bodyEnabled: 'f:header-sticky-enabled',
+      bodyVisible: 'f:header-sticky--visible',
+    }
+
 		this.stickyEnabled = this.dataset.headerSticky === 'true'
+		this.headerTransparent = this.dataset.headerTransparent === 'true'
+    this.designMode = this.dataset.designMode && this.dataset.designMode === 'true'
 		this.hideOnScroll = true
-		this.header = document.querySelector('.f\\:header')
+    this.header = this.querySelector('header') || this.closest('header')
+    this.headerSection = this.closest(this.classes.headerSection)
 		if (this.stickyEnabled) this.initStickyHeader()
 	}
 
 	disconnectedCallback() {
-		this.removeEventListener('preventHeaderReveal', this._hideHeaderOnScrollUp)
-		window.removeEventListener('scroll', this.onScrollHandler)
+    this.removeEventListener('preventHeaderReveal', this._hideHeaderOnScrollUp)
+    window.removeEventListener('scroll', this.onScrollHandler)
+    this.headerSection.classList.remove(this.classes.headerTransparent)
+    this._reset()
 	}
 
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'data-header-transparent' && this.headerSection) {
+      this.headerTransparent = this.dataset.headerTransparent === 'true'
+      if (!this.headerTransparent) {
+        this.headerSection.classList.remove(this.classes.headerTransparent)
+      } else {
+        this.headerSection.classList.add(this.classes.headerTransparent)
+      }
+    }
+  }
 	initStickyHeader() {
 		this.headerBounds = {}
 		this.currentScrollTop = 0
@@ -23,16 +50,21 @@ class FStickyHeader extends HTMLElement {
 		this.onScrollHandler = this._onScroll.bind(this)
 		this._hideHeaderOnScrollUp = () => this.preventReveal = true
 
-		this.addEventListener('preventHeaderReveal', this._hideHeaderOnScrollUp)
-		window.addEventListener('scroll', this.onScrollHandler, false)
+    this.addEventListener('preventHeaderReveal', this._hideHeaderOnScrollUp)
+    window.addEventListener('scroll', this.onScrollHandler, false)
 
 		this._createObserver()
 
-		document.body.classList.add('f\:header-sticky-enabled')
+    if (this.headerTransparent) {
+      this.headerSection.classList.add(this.classes.headerTransparent)
+    }
+
+		document.body.classList.add(this.classes.bodyEnabled)
 	}
 
 	_onScroll() {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+
 		if (scrollTop > this.currentScrollTop && scrollTop > this.offset) {
 			requestAnimationFrame(this._hide.bind(this))
 		} else if (scrollTop < this.currentScrollTop && scrollTop > this.offset) {
@@ -47,7 +79,7 @@ class FStickyHeader extends HTMLElement {
 
 				requestAnimationFrame(this._hide.bind(this))
 			}
-		} else if (scrollTop <= this.headerBounds.top) {
+		} else if (scrollTop <= this.headerBounds.top + 1) {
 			requestAnimationFrame(this._reset.bind(this))
 		}
 
@@ -65,26 +97,19 @@ class FStickyHeader extends HTMLElement {
 	}
 
 	_hide() {
-		this.header.classList.add('f\:header--sticky', 'f\:header--hidden')
-		document.body.classList.remove('f\:header-sticky--visible')
-		// this._closeMenuDisclosure()
+		this.headerSection.classList.add(this.classes.sticky, this.classes.hidden)
+		document.body.classList.remove(this.classes.bodyVisible)
 	}
 
 	_reveal() {
-		this.header.classList.add('f\:header--sticky', 'f\:header--animate')
-		this.header.classList.remove('f\:header--hidden')
-		document.body.classList.add('f\:header-sticky--visible')
+		this.headerSection.classList.add(this.classes.sticky, this.classes.animate)
+		this.headerSection.classList.remove(this.classes.hidden)
+		document.body.classList.add(this.classes.bodyVisible)
 	}
 
 	_reset() {
-		this.header.classList.remove('f\:header--hidden', 'f\:header--sticky', 'f\:header--animate')
-		document.body.classList.remove('f\:header-sticky--hidden')
+		this.headerSection.classList.remove(this.classes.hidden, this.classes.sticky, this.classes.animate)
 	}
-
-	// _closeMenuDisclosure() {
-	// 	this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
-	// 	this.disclosures.forEach(disclosure => disclosure.close());
-	// }
 }
 
 customElements.define('f-sticky-header', FStickyHeader)

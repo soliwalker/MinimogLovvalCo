@@ -56,11 +56,52 @@ template-{{ template.name | handle }} {{ template.name }}-{{ template.suffix }} 
 <!--Gem_Page_Header_Script-->
 {% render 'gem-app-header-scripts' %}
 <!--End_Gem_Page_Header_Script-->
-</head>
+{% include "omega_twitter_multi_pixel" %}</head>
 
 <body
   id="sf-theme"
   class="{{ body_classes }} relative min-h-screen{% if customer %} customer-logged-in{% endif %}"
   {% if template.name == 'product' %}data-product-id="{{ product.id }}"{% endif %}
-><div class="foxify-container">{{ content_for_layout }}</div></body>
+>
+  {% render 'theme-data' %}
+  
+  
+  {% render 'scroll-top-button' %}
+
+  <main role="main" id="MainContent">
+    <div class="foxify-container">{{ content_for_layout }}</div>
+    <div id="cart-drawer-container"></div>
+  </main>
+
+  {%- liquid
+  -%}
+
+  {% section 'mobile-sticky-bar' %}
+
+  {% render 'custom-code-body' %}
+  {% render 'foxkit-messenger' %}
+  {% render 'script-tags' %}
+
+  <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
+
+  <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
+
+	{{ shop.metafields.loox["global_html_body"] }}
+ {% if product %}
+  <script type="text/javascript">
+var _learnq = _learnq || [];
+	document.getElementById("so-btn-add-to-cart-copy").addEventListener('click',function (){
+ 		_learnq.push(['track', 'Added to Cart', item]);
+	});</script>
+  {% endif %}
+{%- render 'page-footer.zipifypages', renderctx: 'thm', ocuapp: oneclickupsellapp -%}
+{% render 'oneclickupsellapp-theme', oneclickupsellapp: oneclickupsellapp %}
+{% assign oneclickupsellapp = true %}
+<!--Gem_Page_Footer_Script-->
+{% render 'gem-app-footer-scripts', GEM_FOOTER_SCRIPT: GEM_FOOTER_SCRIPT %}
+<!--End_Gem_Page_Footer_Script-->
+
+</body>
 </html>

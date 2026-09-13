@@ -650,10 +650,7 @@ Hide upsell popup
 
             {% include 'badges-shineon' with 'product-badges' %}
 
-            {% include 'product-shineon-image-slider' with product
-                and one_style
-                and hidden_variants
-                and hidden_images %}
+            {% include 'product-shineon-image-slider' with product %}
 
             {% assign badge_uploaded = false %}
             {% if section.settings.badge_img_1 != null or section.settings.badge_img_2 != null or section.settings.badge_img_3 != null or section.settings.badge_img_4 != null or section.settings.badge_img_5 != null or section.settings.badge_img_6 != null %}
@@ -714,24 +711,7 @@ Hide upsell popup
           </div>
           <div class="so-col-5 so-product-right">
             {% if is_template_optimized == true %}
-            {% include 'product-shineon-form-e-and-g-upsell' with product
-                  and base_variant
-                  and has_engraving
-                  and has_gold_variants
-                  and has_multiple_metals
-                  and has_silver_variants
-                  and hidden_images
-                  and hidden_variants
-                  and metals
-                  and one_style
-                  and option1_list
-                  and option2_list
-                  and option3_list
-                  and quantity_selector
-                  and tag_text
-                  and metal_swatch_view
-                  and metal_swatch_svg
-                  %}
+            {% include 'product-shineon-form-e-and-g-upsell' with product %}
 
                 {% unless section.settings.content_right == '' %}
                   <div class="so-additional-content so-additional-content-right">
@@ -752,21 +732,7 @@ Hide upsell popup
               {% if upsell_snippet == true and upsell_option != false %}
                 {% include 'product-shineon-form-upsell-popup' %}
               {% else %}
-                {% include 'product-shineon-form' with product
-                      and one_style
-                      and hidden_variants
-                      and hidden_images
-                      and has_engraving
-                      and has_gold_variants
-                      and has_silver_variants
-                      and has_multiple_metals
-                      and option1_list
-                      and option2_list
-                      and option3_list
-                      and quantity_selector
-                      and tag_text
-                      and metal_swatch_view
-                      and metal_swatch_svg %}
+                {% include 'product-shineon-form' with product %}
                       {% unless section.settings.content_right == '' %}
                         <div class="so-additional-content so-additional-content-right">
                           {{ section.settings.content_right }}
@@ -4871,4 +4837,56 @@ Hide upsell popup
     }
   }
 }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'product-shineon-image-slider' with product
+                    and one_style
+                    and hidden_variants
+                    and hidden_images %}
+  to: "{% include 'product-shineon-image-slider' with product %}"
+  position: 27739..27796
+- from: |-
+    {% include 'product-shineon-form-e-and-g-upsell' with product
+                      and base_variant
+                      and has_engraving
+                      and has_gold_variants
+                      and has_multiple_metals
+                      and has_silver_variants
+                      and hidden_images
+                      and hidden_variants
+                      and metals
+                      and one_style
+                      and option1_list
+                      and option2_list
+                      and option3_list
+                      and quantity_selector
+                      and tag_text
+                      and metal_swatch_view
+                      and metal_swatch_svg
+                      %}
+  to: "{% include 'product-shineon-form-e-and-g-upsell' with product %}"
+  position: 30869..30933
+- from: |-
+    {% include 'product-shineon-form' with product
+                          and one_style
+                          and hidden_variants
+                          and hidden_images
+                          and has_engraving
+                          and has_gold_variants
+                          and has_silver_variants
+                          and has_multiple_metals
+                          and option1_list
+                          and option2_list
+                          and option3_list
+                          and quantity_selector
+                          and tag_text
+                          and metal_swatch_view
+                          and metal_swatch_svg %}
+  to: "{% include 'product-shineon-form' with product %}"
+  position: 31998..32047
+{%- endcomment -%}

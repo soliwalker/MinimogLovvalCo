@@ -676,7 +676,7 @@ atc_upsell_type_1 - {{ atc_upsell_type | json }}<br/>
   </so-product-modal>
 
   {% if has_atc_upsell %}
-    {%- render 'so-popup-upsell' with atc_upsell_type: atc_upsell_type, product_cf_obj: product_cf_obj, shop_pt_id_obj: shop_pt_id_obj, option2: option2 -%}
+    {%- render 'so-popup-upsell' with atc_upsell_type, atc_upsell_type: atc_upsell_type, product_cf_obj: product_cf_obj, shop_pt_id_obj: shop_pt_id_obj, option2: option2 -%}
   {% endif %}
 
   {% assign popups = section.blocks | where: "type", "popup" %}
@@ -1113,3 +1113,16 @@ atc_upsell_type_1 - {{ atc_upsell_type | json }}<br/>
   }
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'so-popup-upsell' with atc_upsell_type: atc_upsell_type, product_cf_obj:
+    product_cf_obj, shop_pt_id_obj: shop_pt_id_obj, option2: option2 -%}"
+  to: "{%- render 'so-popup-upsell' with atc_upsell_type, atc_upsell_type: atc_upsell_type,
+    product_cf_obj: product_cf_obj, shop_pt_id_obj: shop_pt_id_obj, option2: option2
+    -%}"
+  position: 43826..43995
+{% endcomment %}

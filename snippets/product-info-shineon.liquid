@@ -1180,11 +1180,7 @@
 
     {% if cro_design_product != false %}
 
-      {% include 'product-info-shineon'
-          with 'so-product-price'
-          and quantity_selector
-          and tag_text
-      %}
+      {% include 'product-info-shineon' with 'so-product-price' %}
 
     {% endif %}
 
@@ -2315,3 +2311,18 @@
       <img id="product-specification-photo" src="{{ product_specs_photo }}" alt="Specification for {{ cro_design_product }}">
     {% endif %}
 {% endcase %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% include 'product-info-shineon'
+              with 'so-product-price'
+              and quantity_selector
+              and tag_text
+          %}
+  to: "{% include 'product-info-shineon' with 'so-product-price' %}"
+  position: 53248..53308
+{% endcomment %}
